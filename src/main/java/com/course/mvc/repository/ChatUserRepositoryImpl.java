@@ -32,8 +32,8 @@ public class ChatUserRepositoryImpl implements ChatUserRepositoryCustom {
             System.out.println("AFTER_EXCEPTION_ERROR!!!");
         }catch (Throwable ex){
             ex.printStackTrace();
-            if(ex.getCause() instanceof PersistenceException){
-                PersistenceException persistenceException = (PersistenceException) ex.getCause();
+            if(ex instanceof PersistenceException){
+                PersistenceException persistenceException = (PersistenceException) ex;
                 if(persistenceException.getCause() instanceof ConstraintViolationException){
                     throw new UserSaveException("user.exist");
                 }
