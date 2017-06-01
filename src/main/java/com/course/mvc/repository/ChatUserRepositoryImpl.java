@@ -3,6 +3,9 @@ package com.course.mvc.repository;
 import com.course.mvc.domain.ChatUser;
 import com.course.mvc.exceptions.UserSaveException;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -21,6 +24,9 @@ public class ChatUserRepositoryImpl implements ChatUserRepositoryCustom {
     @PersistenceContext
     private EntityManager em;
 
+    @Autowired
+    private MessageSource messageSource;
+
     @Override
     @Modifying
     @Transactional(propagation = Propagation.REQUIRED)
@@ -35,10 +41,10 @@ public class ChatUserRepositoryImpl implements ChatUserRepositoryCustom {
             if(ex instanceof PersistenceException){
                 PersistenceException persistenceException = (PersistenceException) ex;
                 if(persistenceException.getCause() instanceof ConstraintViolationException){
-                    throw new UserSaveException("user.exist");
+                    throw new UserSaveException(messageSource.getMessage("user.exist", null, LocaleContextHolder.getLocale()));
                 }
             }
-            throw new UserSaveException("db.error");
+            throw new UserSaveException(messageSource.getMessage("db.error", null, LocaleContextHolder.getLocale()));
         }
     }
 }
