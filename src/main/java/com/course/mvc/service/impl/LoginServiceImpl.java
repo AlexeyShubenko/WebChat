@@ -17,11 +17,11 @@ import javax.transaction.Transactional;
 @Service
 public class LoginServiceImpl implements LoginService {
 
-    private ChatUserRepository userRepository;
+    private ChatUserRepository chatUserRepository;
 
     @Autowired
-    public LoginServiceImpl(ChatUserRepository userRepository) {
-        this.userRepository = userRepository;
+    public LoginServiceImpl(ChatUserRepository chatUserRepository) {
+        this.chatUserRepository = chatUserRepository;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class LoginServiceImpl implements LoginService {
                             .build();
         try {
             System.out.println("IN_LOGIN_SERVICE!");
-            userRepository.saveUser(chatUser);
+            chatUserRepository.saveUser(chatUser);
         }catch (UserSaveException ex){
             ///intercept by aspectExceptionHandler
             throw new ServiceException(ex.getMessage());
