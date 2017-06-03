@@ -38,6 +38,7 @@ public class LoginServiceImpl implements LoginService {
                             .setName(chatUserDto)
                             .setLogin(chatUserDto)
                             .setPassword(chatUserDto)
+                            .setRole(role)
                             .build();
         try {
             System.out.println("IN_LOGIN_SERVICE!");
