@@ -1,5 +1,6 @@
 package com.course.mvc.service;
 
+import com.course.mvc.domain.ChatUser;
 import com.course.mvc.dto.ChatUserDto;
 
 /**
@@ -8,5 +9,7 @@ import com.course.mvc.dto.ChatUserDto;
 public interface LoginService {
 
     void save(ChatUserDto chatUserDto);
+
+    ChatUser verifyLogin(String login, String password);
 
 }

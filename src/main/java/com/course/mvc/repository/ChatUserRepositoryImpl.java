@@ -36,15 +36,12 @@ public class ChatUserRepositoryImpl implements ChatUserRepositoryCustom {
             em.persist(user);
             em.flush();
             System.out.println("AFTER_EXCEPTION_ERROR!!!");
-        }catch (Throwable ex){
-            ex.printStackTrace();
-            if(ex instanceof PersistenceException){
-                PersistenceException persistenceException = (PersistenceException) ex;
-                if(persistenceException.getCause() instanceof ConstraintViolationException){
+        }catch (PersistenceException ex){
+                if(ex.getCause() instanceof ConstraintViolationException){
                     throw new UserSaveException(messageSource.getMessage("user.exist", null, LocaleContextHolder.getLocale()));
+                } else {
+                    throw new UserSaveException(messageSource.getMessage("db.error", null, LocaleContextHolder.getLocale()));
                 }
-            }
-            throw new UserSaveException(messageSource.getMessage("db.error", null, LocaleContextHolder.getLocale()));
         }
     }
 }

@@ -43,7 +43,7 @@ public class AspectExceptionHandler {
      * @return
      */
     @ExceptionHandler(ServiceException.class)
-    public RedirectView handleServiceException(Exception exception, HttpServletRequest request) {
+    public RedirectView handleServiceException(ServiceException exception, HttpServletRequest request) {
         RedirectView rw = new RedirectView("./registration");
         rw.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
 
@@ -53,5 +53,7 @@ public class AspectExceptionHandler {
         }
         return rw;
     }
+
+    //TODO Change handleServiceException via HttpSession
 
 }

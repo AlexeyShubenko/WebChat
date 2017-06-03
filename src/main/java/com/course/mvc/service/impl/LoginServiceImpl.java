@@ -1,15 +1,19 @@
 package com.course.mvc.service.impl;
 
 import com.course.mvc.domain.ChatUser;
+import com.course.mvc.domain.Role;
+import com.course.mvc.domain.RoleEnum;
 import com.course.mvc.dto.ChatUserDto;
 import com.course.mvc.exceptions.ServiceException;
 import com.course.mvc.exceptions.UserSaveException;
 import com.course.mvc.repository.ChatUserRepository;
+import com.course.mvc.repository.RoleRepository;
 import com.course.mvc.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Objects;
 
 /**
  * Created by Alexey on 27.05.2017.
@@ -18,15 +22,18 @@ import javax.transaction.Transactional;
 public class LoginServiceImpl implements LoginService {
 
     private ChatUserRepository chatUserRepository;
+    private RoleRepository roleRepository;
 
     @Autowired
-    public LoginServiceImpl(ChatUserRepository chatUserRepository) {
+    public LoginServiceImpl(ChatUserRepository chatUserRepository, RoleRepository roleRepository) {
         this.chatUserRepository = chatUserRepository;
+        this.roleRepository = roleRepository;
     }
 
     @Override
 //    @Transactional
     public void save(ChatUserDto chatUserDto) {
+        Role role = roleRepository.finfRoleByRoleName(RoleEnum.USER);
         ChatUser chatUser = new ChatUser.Builder()
                             .setName(chatUserDto)
                             .setLogin(chatUserDto)
@@ -39,5 +46,15 @@ public class LoginServiceImpl implements LoginService {
             ///intercept by aspectExceptionHandler
             throw new ServiceException(ex.getMessage());
         }
+    }
+
+    @Override
+//    @Transactional
+    public ChatUser verifyLogin(String login, String password) {
+        ChatUser chatUser = chatUserRepository.findChatUserByLogin(login);
+        if (Objects.nonNull(chatUser) && chatUser.getPassword().equals(password)) {
+            return chatUser;
+        }
+        return null;
     }
 }
