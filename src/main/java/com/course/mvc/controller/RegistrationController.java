@@ -38,16 +38,16 @@ public class RegistrationController {
     }
 
     @RequestMapping(value = "/registration",method = RequestMethod.POST)
-    public String saveUser(@Validated @ModelAttribute("user") ChatUserDto userDto,
+    public String saveUser(@Validated @ModelAttribute("user") ChatUserDto chatUserDto,
                                  BindingResult result, RedirectAttributes attributes){
         if(result.hasErrors()){
             attributes.addFlashAttribute("org.springframework.validation.BindingResult.user",result);
-            userDto.setPassword("");
-            attributes.addFlashAttribute("user",userDto);
+            chatUserDto.setPassword("");
+            attributes.addFlashAttribute("user",chatUserDto);
             return "redirect:/registration";
         }
         System.out.println("IN_SAVE_REGISTRATION");
-        loginService.save(userDto);
+        loginService.save(chatUserDto);
         return "redirect:/";
     }
 
