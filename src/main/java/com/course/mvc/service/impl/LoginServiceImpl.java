@@ -12,7 +12,6 @@ import com.course.mvc.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.Objects;
 
 /**
@@ -33,7 +32,7 @@ public class LoginServiceImpl implements LoginService {
     @Override
 //    @Transactional
     public void save(ChatUserDto chatUserDto) {
-        Role role = roleRepository.finfRoleByRoleName(RoleEnum.USER);
+        Role role = roleRepository.findRoleByRoleName(RoleEnum.USER);
         ChatUser chatUser = new ChatUser.Builder()
                             .setName(chatUserDto)
                             .setLogin(chatUserDto)

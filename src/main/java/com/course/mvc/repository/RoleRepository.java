@@ -14,5 +14,5 @@ import org.springframework.stereotype.Repository;
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
     @Query("select r from Role r where r.role = :roleEnum")
-    Role finfRoleByRoleName(@Param("roleEnum") RoleEnum roleEnum);
+    Role findRoleByRoleName(@Param("roleEnum") RoleEnum roleEnum);
 }
