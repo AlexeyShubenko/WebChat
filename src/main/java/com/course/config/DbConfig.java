@@ -44,7 +44,7 @@ public class DbConfig {
 
     @Bean
     public DataSource dataSource() {
-        ///connection pool
+        // Прописываем коннект к БД. Создается пул соединений и наполняем его каким-то определенным кол-ом соединений с БД.
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(env.getRequiredProperty(PROP_DATABASE_DRIVER));
         dataSource.setUrl(env.getRequiredProperty(PROP_DATABASE_URL));
@@ -56,6 +56,7 @@ public class DbConfig {
 
     @Bean
     public JpaTransactionManager transactionManager() {
+        // Подымаем менеджер транзакций, чтобы аннотация @Transactional работала.
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
 
@@ -79,6 +80,9 @@ public class DbConfig {
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        // Подымаем фабрику entityManagerFactory, чтобы получить потом entityManager
+        // Здесь же инициализуруетсся Spring Data, которая подымает контейнер Hibernate и рассказывает ему где находится доменная модель
+        //TODO Рассмотреть работу Hibernate без использования Spring Data
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource());
         entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);

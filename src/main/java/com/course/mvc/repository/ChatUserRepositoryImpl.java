@@ -28,12 +28,14 @@ public class ChatUserRepositoryImpl implements ChatUserRepositoryCustom {
     private MessageSource messageSource;
 
     @Override
-    @Modifying
-    @Transactional(propagation = Propagation.REQUIRED)
+    // @Modifying /* Если удаляем, тогда эта аннотация нужна */
+    // @Transactional(propagation = Propagation.REQUIRED) /* Propagation.REQUIRED - по умолчанию */
+    @Transactional
     public void saveUser(ChatUser user) {
         try {
             System.out.println("EXCEPTION_ERROR!!!");
             em.persist(user);
+            // Сохранить и завершить транзакцию, так как мы взяли на себя управление транзакцией и используем EntityManager
             em.flush();
             System.out.println("AFTER_EXCEPTION_ERROR!!!");
         }catch (PersistenceException ex){

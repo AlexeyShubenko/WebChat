@@ -12,7 +12,7 @@ public class JspConfig {
 
     @Bean
     public InternalResourceViewResolver getViewResolver() {
-//        System.out.println("getViewResolver");
+        // Где искать jsp файлы
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setPrefix("/WEB-INF/views/");
         viewResolver.setSuffix(".jsp");

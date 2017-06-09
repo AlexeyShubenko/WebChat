@@ -20,10 +20,14 @@ import java.util.Locale;
  * Created by Alexey on 20.05.2017.
  */
 @Configuration
-@EnableWebMvc
+@EnableWebMvc  // включить аннотации Spring MVC, т.е. сказать контейнеру Spring-а реагировать на них
 @ComponentScan(value = "com.course.mvc.*")
 public class AppConfig extends WebMvcConfigurerAdapter{
 
+    /**
+     * Где находятся ресурсы, которые будут браться напрямую без участия DispatcherServlet (css, js и т.п.)
+     * @param registry
+     */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("/static/");
