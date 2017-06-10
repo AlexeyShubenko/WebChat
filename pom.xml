@@ -129,6 +129,7 @@
       <artifactId>spring-hateoas</artifactId>
       <version>0.21.0.RELEASE</version>
     </dependency>
+
     <dependency>
       <groupId>redis.clients</groupId>
       <artifactId>jedis</artifactId>
