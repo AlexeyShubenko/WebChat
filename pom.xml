@@ -206,6 +206,12 @@
       <version>5.2.4.Final</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-redis</artifactId>
+      <version>1.8.4.RELEASE</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -228,7 +234,7 @@
           <username>tomcat</username>
           <password>tomcat</password>
           <httpsPort>442</httpsPort>
-          <path>/webchat</path>
+          <path>/</path>
         </configuration>
       </plugin>
     </plugins>

@@ -47,11 +47,13 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     @Autowired
     public void setSocketService(WebSocketService socketService) {
         this.socketService = socketService;
+        System.out.println("IN CONSTRUCTOR SOCKET SERVICE");
     }
 
     //визивається коли від клієнта прийшов message
     @Override
     public void handleTextMessage(WebSocketSession socketSession, TextMessage message) throws Exception {
+        System.out.println("IN HANDLE TEXT MESSAGE!!");
         ///json -> String
         String jsonMessage = message.getPayload();
         Gson gson = new Gson();
@@ -59,18 +61,21 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         }.getType();
         //формуємо map з json
         Map<String, String> stringMap = gson.fromJson(jsonMessage, gsonType);
+        System.out.println("SESSION ID "+stringMap.get("sessionid"));
         //if true - user хочет стать online
         if (Objects.nonNull(stringMap.get("sessionid"))) {
             ///регистрируем online
             if (registration(stringMap.get("sessionid"), socketSession)) {
                 //registrated online
-                socketSession.sendMessage(new TextMessage("{'auth':'yes'}"));
+                socketSession.sendMessage(new TextMessage("{\"auth\":\"yes\"}"));
                 ///сказать всем юзерам что online
                 sendListOfUsers();
+                System.out.println("LIST OF USER!");
                 sendAllMessageForUser(socketSession);
+                System.out.println("AFTER LIST OF USERS!");
             } else {
                 //если нету в httpSession юзера с sessionId
-                socketSession.sendMessage(new TextMessage("{'auth':'no'}"));
+                socketSession.sendMessage(new TextMessage("{\"auth\":\"no\"}"));
             }
         } else {
             //1. кто то хочет в обход системи послать json
@@ -80,15 +85,19 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
             //true (ключ null) -  уже онлайн
             if (Objects.nonNull(senderLogin)) {
                 if (Objects.nonNull(stringMap.get("broadcast"))) {
+                    System.out.println("IN BROADAST!!");
                     //получаем message
                     String broadcastMessage = stringMap.get("broadcast");
+                    System.out.println("MESSAGE: " + broadcastMessage);
                     socketService.saveBroadcastMessage(broadcastMessage,senderLogin);
                     ///формируем json ответа
                     JsonObject broadcastJson = new JsonObject();
                     broadcastJson.addProperty("auth","yes");
-                    broadcastJson.addProperty(senderLogin, broadcastMessage);
+                    broadcastJson.addProperty("name", senderLogin);
+                    broadcastJson.addProperty("message",broadcastMessage);
                     ///отсилает сообщ. всем активним пользователям
                     sendAllActiveUsers(broadcastJson);
+
                 } else if (Objects.nonNull(stringMap.get("login"))) { //приватные сообщения если ключ login
                     String receiverLogin = stringMap.get("login");
                     String messageToForward = stringMap.get("message");
@@ -108,7 +117,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
                     socketSession.sendMessage(new TextMessage("bad json"));
                 }
             } else {
-                socketSession.sendMessage(new TextMessage("{'auth':'no'}"));
+                socketSession.sendMessage(new TextMessage("{\"auth\":\"no\"}"));
             }
 
         }
@@ -149,6 +158,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         for (Map.Entry<String,String> entry: messages.entrySet()) {
             sendMessage(socketSession, entry);
         }
+        System.out.println("IN SEND ALL MESSAGE!");
         Map<String,String> broadcastMessages = socketService.getBroadcastMessages();
         for (Map.Entry<String,String> entry: broadcastMessages.entrySet()) {
             sendMessage(socketSession, entry);
@@ -176,6 +186,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         for (WebSocketSession session : socketSessionMap.values()) {
             session.sendMessage(new TextMessage(broadcastJson.toString()));
         }
+        System.out.println("IN sendAllActiveUsers");
     }
 
     private void forwardMessage(String receiverLogin, String senderLogin, String messageToForward) throws IOException {

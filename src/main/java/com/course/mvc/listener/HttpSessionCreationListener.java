@@ -26,6 +26,7 @@ public class HttpSessionCreationListener implements HttpSessionListener{
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
         HttpSession httpSession = httpSessionEvent.getSession();
         String sessionId = httpSession.getId();
+        System.out.println("SESSION DESTROYED!");
         httpSessionMap.remove(sessionId);
     }
 

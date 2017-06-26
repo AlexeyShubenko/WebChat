@@ -54,6 +54,12 @@ public class AspectExceptionHandler {
         return rw;
     }
 
+    @ExceptionHandler(Exception.class)
+    public String handleException(Exception ex){
+        ex.printStackTrace();
+        return "/index";
+    }
+
     //TODO Change handleServiceException via HttpSession
 
 }

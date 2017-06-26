@@ -6,10 +6,13 @@
 
     <script src="http://cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
     <script>
+        function ready() {
+            document.getElementById("sendButton").addEventListener("click", send);
+            document.getElementById("broadcastButton").addEventListener("click", broadcast);
+            document.getElementById("logoutButton").addEventListener("click", logout);
+        }
+        document.addEventListener("DOMContentLoaded", ready);
         var socket = new SockJS("${sockUrl}");
-        document.getElementById("sendButton").addEventListener("click", send);
-        document.getElementById("broadcastButton").addEventListener("click", broadcast);
-        document.getElementById("logoutButton").addEventListener("click", logout);
         socket.onopen = function () {
             console.log("Connection successful!");
             registration();
@@ -20,17 +23,17 @@
             } else {
                 console.log("Connection closed because of error!");
             }
-            window.location.href = "/";
+//            window.location.href = "/";
         };
         socket.onerror = function (error) {
-            console.log(error);
-            window.location.href = "/";
+            console.log("error");
+//            window.location.href = "/";
         };
         socket.onmessage = function (event) {
             var json_message = JSON.parse(event.data);
             if (typeof json_message.auth === "undefined") {
                 console.log("Bad JSON");
-                window.location.href = "/";
+//                window.location.href = "/";
             }
             if (json_message.auth == "yes" && typeof json_message.list !== "undefined") {
                 var array_active_users = json_message.list;
@@ -51,6 +54,7 @@
                 var output = json_message.login + ": " + json_message.message;
                 document.getElementById("inputMessage").value += output +"\n";
             }
+            //TODO "name":"..."; "message":"..."
         };
         function registration() {
             var sessionid = getCookie("JSESSIONID");
@@ -85,7 +89,7 @@
             var answer = {};
             answer["logout"] = "";
             socket.send(JSON.stringify(answer));
-            window.location.href = "/";
+//            window.location.href = "/";
         }
     </script>
 
