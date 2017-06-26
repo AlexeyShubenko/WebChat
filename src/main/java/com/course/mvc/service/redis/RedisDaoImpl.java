@@ -30,9 +30,9 @@ public class RedisDaoImpl implements RedisDao{
     @Override
     public List<String> getAllDataByKey(String key) {
         //0 - c первого елемента, -1 - до последнего
-        System.out.println("IN REDIS DAO " + poolFactory.getJedis());
+//        System.out.println("IN REDIS DAO " + poolFactory.getJedis());
         List<String> strings = poolFactory.getJedis().lrange(key,0,-1);
-        System.out.println("COLLECTION SIZE IS "+strings);
+//        System.out.println("COLLECTION SIZE IS "+strings);
         return strings;
     }
 }

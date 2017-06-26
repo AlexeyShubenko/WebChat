@@ -36,7 +36,7 @@ public class WebSocketServiceImpl implements WebSocketService {
     public void saveBroadcastMessage(String broadcastMessage, String senderLogin) {
         String value = senderLogin + ":" + broadcastMessage;
         redisDao.saveDataByKey("broadcast", value);
-        System.out.println("AFTER SAVE BROADCAST MESSAGE");
+//        System.out.println("AFTER SAVE BROADCAST MESSAGE");
     }
 
     @Override

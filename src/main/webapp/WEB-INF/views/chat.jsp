@@ -55,6 +55,13 @@
                 document.getElementById("inputMessage").value += output +"\n";
             }
             //TODO "name":"..."; "message":"..."
+
+            if(json_message.auth == "yes" && typeof json_message.name !== "undefined"
+                                          && typeof json_message.message!=="undefined"){
+                var output = json_message.name+ ": " + json_message.message;
+                document.getElementById("inputMessage").value += output+"\n";
+            }
+
         };
         function registration() {
             var sessionid = getCookie("JSESSIONID");

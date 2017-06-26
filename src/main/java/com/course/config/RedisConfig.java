@@ -28,7 +28,7 @@ public class RedisConfig {
     public JedisPool getJedisPool() {
         JedisPoolConfig poolConfig = new JedisPoolConfig();
         JedisPool jedisPool = new JedisPool(poolConfig, env.getProperty(REDIS_HOST), 6379, 30);
-        System.out.println("IN POOLFACTORY " + jedisPool.getResource());
+//        System.out.println("IN POOLFACTORY " + jedisPool.getResource());
         return jedisPool;
     }
 

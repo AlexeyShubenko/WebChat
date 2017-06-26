@@ -70,9 +70,9 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
                 socketSession.sendMessage(new TextMessage("{\"auth\":\"yes\"}"));
                 ///сказать всем юзерам что online
                 sendListOfUsers();
-                System.out.println("LIST OF USER!");
+//                System.out.println("LIST OF USER!");
                 sendAllMessageForUser(socketSession);
-                System.out.println("AFTER LIST OF USERS!");
+//                System.out.println("AFTER LIST OF USERS!");
             } else {
                 //если нету в httpSession юзера с sessionId
                 socketSession.sendMessage(new TextMessage("{\"auth\":\"no\"}"));
@@ -85,10 +85,10 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
             //true (ключ null) -  уже онлайн
             if (Objects.nonNull(senderLogin)) {
                 if (Objects.nonNull(stringMap.get("broadcast"))) {
-                    System.out.println("IN BROADAST!!");
+//                    System.out.println("IN BROADAST!!");
                     //получаем message
                     String broadcastMessage = stringMap.get("broadcast");
-                    System.out.println("MESSAGE: " + broadcastMessage);
+//                    System.out.println("MESSAGE: " + broadcastMessage);
                     socketService.saveBroadcastMessage(broadcastMessage,senderLogin);
                     ///формируем json ответа
                     JsonObject broadcastJson = new JsonObject();
@@ -158,7 +158,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         for (Map.Entry<String,String> entry: messages.entrySet()) {
             sendMessage(socketSession, entry);
         }
-        System.out.println("IN SEND ALL MESSAGE!");
+//        System.out.println("IN SEND ALL MESSAGE!");
         Map<String,String> broadcastMessages = socketService.getBroadcastMessages();
         for (Map.Entry<String,String> entry: broadcastMessages.entrySet()) {
             sendMessage(socketSession, entry);
