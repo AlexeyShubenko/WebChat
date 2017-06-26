@@ -18,7 +18,9 @@
                     <div class="panel-heading">Registration</div>
                     <div class="panel-body">
 
-                            ${error}
+                        <div class="error">
+                                ${error}
+                        </div>
 
                         <div class="form-group">
                             <label for="name" class="col-sm-3 control-label"><s:message code="auth.name"></s:message></label>

@@ -1,10 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <html>
+
+<head>
+    <link href="./static/css/cssfile.css" rel="stylesheet">
+</head>
+
 <body>
 <h1>Welcome to login page!</h1>
 
-${error}
+<div class="error">
+    ${error}
+</div>
 
 <form action="${loginHandler}" method="post">
     login: <input type="text" name="login" placeholder="login here"/></br>

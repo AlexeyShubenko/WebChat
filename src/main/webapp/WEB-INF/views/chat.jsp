@@ -2,8 +2,8 @@
 <html>
 <head>
 
-    <title>Title</title>
-
+    <title>chat page</title>
+    <link href="./static/css/cssfile.css" rel="stylesheet">
     <script src="http://cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
     <script>
         function ready() {
@@ -104,6 +104,11 @@
 <body>
 
 <h1>Welcome to chat!</h1>
+
+<div>
+    <div>name: ${user.name}</div>
+    <div>login: ${user.login}</div>
+</div>
 
 <table>
     <tr>

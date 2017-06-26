@@ -52,7 +52,7 @@ public class LoginController {
             session.setAttribute("user", chatUser);
             dropHttpOnlyFlag(session.getId(),request,response);
             System.out.println(chatUser.toString());
-            System.out.println("CHATTTTT");
+//            System.out.println("CHATTTTT");
             return "redirect:/chat";
         }
         if (Objects.nonNull(chatUser) && chatUser.getRole().getRole() == RoleEnum.ADMIN) {
