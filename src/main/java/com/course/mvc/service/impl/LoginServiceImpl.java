@@ -30,7 +30,6 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-//    @Transactional
     public void save(ChatUserDto chatUserDto) {
         Role role = roleRepository.findRoleByRoleName(RoleEnum.USER);
         ChatUser chatUser = new ChatUser.Builder()
@@ -40,10 +39,8 @@ public class LoginServiceImpl implements LoginService {
                             .setRole(role)
                             .build();
         try {
-            System.out.println("IN_LOGIN_SERVICE!");
             chatUserRepository.saveUser(chatUser);
         }catch (UserSaveException ex){
-            ///intercept by aspectExceptionHandler
             throw new ServiceException(ex.getMessage());
         }
     }

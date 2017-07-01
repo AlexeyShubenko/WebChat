@@ -46,7 +46,6 @@ public class RegistrationController {
             attributes.addFlashAttribute("user",chatUserDto);
             return "redirect:/registration";
         }
-        System.out.println("IN_SAVE_REGISTRATION");
         loginService.save(chatUserDto);
         return "redirect:/";
     }

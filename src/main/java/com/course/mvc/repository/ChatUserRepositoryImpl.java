@@ -33,11 +33,9 @@ public class ChatUserRepositoryImpl implements ChatUserRepositoryCustom {
     @Transactional
     public void saveUser(ChatUser user) {
         try {
-            System.out.println("EXCEPTION_ERROR!!!");
             em.persist(user);
             // Сохранить и завершить транзакцию, так как мы взяли на себя управление транзакцией и используем EntityManager
             em.flush();
-            System.out.println("AFTER_EXCEPTION_ERROR!!!");
         }catch (PersistenceException ex){
                 if(ex.getCause() instanceof ConstraintViolationException){
                     throw new UserSaveException(messageSource.getMessage("user.exist", null, LocaleContextHolder.getLocale()));

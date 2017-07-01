@@ -212,6 +212,12 @@
       <version>1.8.4.RELEASE</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-java8</artifactId>
+      <version>${hb.manager}</version>
+    </dependency>
+
   </dependencies>
 
   <build>

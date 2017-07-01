@@ -1,6 +1,10 @@
 package com.course.mvc.domain;
 
+import org.hibernate.annotations.ColumnDefault;
+
+import javax.enterprise.inject.Default;
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -23,7 +27,6 @@ public class Message {
     @JoinColumn(name = "receiver_id")
     private ChatUser receiver;
     @Column
-//    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime date;
 
     public Long getId() {

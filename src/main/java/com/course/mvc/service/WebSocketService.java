@@ -1,5 +1,8 @@
 package com.course.mvc.service;
 
+import javafx.util.Pair;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -8,8 +11,10 @@ import java.util.Map;
 public interface WebSocketService {
 
     void saveBroadcastMessage(String broadcastMessage, String senderLogin);
-    Map<String,String> getMessagesByLogin(String receiverLogin);
-    Map<String,String> getBroadcastMessages();
+    List<Pair<String,String>> getMessagesByLogin(String receiverLogin);
+    List<Pair<String,String>> getBroadcastMessages();
 
     void savePrivateMessage(String receiverLogin, String senderLogin, String messageToForward);
+
+    void deletePrivateMessages(String receiverLogin);
 }

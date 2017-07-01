@@ -6,6 +6,7 @@ import com.course.mvc.service.WebSocketService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -47,13 +48,11 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     @Autowired
     public void setSocketService(WebSocketService socketService) {
         this.socketService = socketService;
-        System.out.println("IN CONSTRUCTOR SOCKET SERVICE");
     }
 
     //визивається коли від клієнта прийшов message
     @Override
     public void handleTextMessage(WebSocketSession socketSession, TextMessage message) throws Exception {
-        System.out.println("IN HANDLE TEXT MESSAGE!!");
         ///json -> String
         String jsonMessage = message.getPayload();
         Gson gson = new Gson();
@@ -61,7 +60,6 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         }.getType();
         //формуємо map з json
         Map<String, String> stringMap = gson.fromJson(jsonMessage, gsonType);
-        System.out.println("SESSION ID "+stringMap.get("sessionid"));
         //if true - user хочет стать online
         if (Objects.nonNull(stringMap.get("sessionid"))) {
             ///регистрируем online
@@ -101,7 +99,9 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
                 } else if (Objects.nonNull(stringMap.get("login"))) { //приватные сообщения если ключ login
                     String receiverLogin = stringMap.get("login");
                     String messageToForward = stringMap.get("message");
-                    if (Objects.nonNull(receiverLogin)) {
+                    System.out.println("PRIVATE MESSAGE " + receiverLogin);
+
+                    if (Objects.nonNull(socketSessionMap.get(receiverLogin))) {
                         //user active
                         forwardMessage(receiverLogin, senderLogin, messageToForward);
                     } else {
@@ -153,19 +153,22 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     private void sendAllMessageForUser(WebSocketSession socketSession) throws IOException {
         String receiverLogin = getKeyByValue(socketSession);
+        System.out.println("RECEIVER LOGIN "+receiverLogin);
         //от кого сообщение и само сообщение
-        Map<String,String> messages = socketService.getMessagesByLogin(receiverLogin);
-        for (Map.Entry<String,String> entry: messages.entrySet()) {
+        List<Pair<String,String>> messages = socketService.getMessagesByLogin(receiverLogin);
+        for (Pair<String,String> entry: messages) {
             sendMessage(socketSession, entry);
         }
-//        System.out.println("IN SEND ALL MESSAGE!");
-        Map<String,String> broadcastMessages = socketService.getBroadcastMessages();
-        for (Map.Entry<String,String> entry: broadcastMessages.entrySet()) {
+        socketService.deletePrivateMessages(receiverLogin);
+        System.out.println("IN SEND ALL MESSAGE!");
+        List<Pair<String,String>> broadcastMessages = socketService.getBroadcastMessages();
+        for (Pair<String,String> entry: broadcastMessages) {
             sendMessage(socketSession, entry);
         }
+        System.out.println("IN SEND ALL MESSAGE BROADCAST!");
     }
 
-    private void sendMessage(WebSocketSession socketSession, Map.Entry<String, String> entry) throws IOException {
+    private void sendMessage(WebSocketSession socketSession, Pair<String, String> entry) throws IOException {
         JsonObject message = new JsonObject();
         message.addProperty("auth", "yes");
         message.addProperty("login",entry.getKey());
