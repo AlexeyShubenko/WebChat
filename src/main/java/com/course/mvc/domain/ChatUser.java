@@ -24,6 +24,7 @@ public class ChatUser {
     private String password;
     @ManyToOne(fetch = FetchType.EAGER)
     private Role role;
+    //add ban
     @OneToMany(mappedBy = "sender",fetch = FetchType.LAZY,orphanRemoval = true)
     private List<Message> sendMessages;
     @OneToMany(mappedBy = "receiver",fetch = FetchType.LAZY,orphanRemoval = true)

@@ -1,7 +1,10 @@
 package com.course.mvc.aspect;
 
+import com.course.mvc.dto.BanDto;
+import com.course.mvc.exceptions.IncorrectBanUserLoginException;
 import com.course.mvc.exceptions.ServiceException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.FlashMap;
@@ -52,6 +55,11 @@ public class AspectExceptionHandler {
             outputFlashMap.put("error", exception.getMessage());
         }
         return rw;
+    }
+
+    @ExceptionHandler(IncorrectBanUserLoginException.class)
+    public ResponseEntity<BanDto> handleServiceException(IncorrectBanUserLoginException exception, HttpServletRequest request) {
+        return new ResponseEntity<BanDto>(new BanDto(),HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)

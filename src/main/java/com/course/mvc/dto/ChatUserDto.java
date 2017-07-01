@@ -11,6 +11,7 @@ import javax.validation.constraints.Size;
  */
 public class ChatUserDto {
 
+    private Long id;
     @NotNull
     @Pattern(regexp = "\\w{2,}",message = "{message.name.err}")
     private String name;
@@ -24,6 +25,11 @@ public class ChatUserDto {
     public static class Builder{
 
         ChatUserDto chatUserDto = new ChatUserDto();
+
+        public Builder setId(ChatUser user){
+            chatUserDto.setId(user.getId());
+            return this;
+        }
 
         public Builder setName(ChatUser user){
             chatUserDto.setName(user.getName());
@@ -40,6 +46,14 @@ public class ChatUserDto {
         public ChatUserDto build(){
             return chatUserDto;
         }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
