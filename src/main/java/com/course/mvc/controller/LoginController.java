@@ -2,6 +2,9 @@ package com.course.mvc.controller;
 
 import com.course.mvc.domain.ChatUser;
 import com.course.mvc.domain.RoleEnum;
+import com.course.mvc.dto.BanUserDto;
+import com.course.mvc.dto.ChatUserDto;
+import com.course.mvc.service.BanService;
 import com.course.mvc.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,10 +29,12 @@ import java.util.Optional;
 public class LoginController {
 
     private final LoginService loginService;
+    private final BanService banService;
 
     @Autowired
-    public LoginController(LoginService loginService) {
+    public LoginController(LoginService loginService,BanService banService) {
         this.loginService = loginService;
+        this.banService=banService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET, name = "loginUser")
@@ -49,10 +54,14 @@ public class LoginController {
         ChatUser chatUser = loginService.verifyLogin(login, password);
 
         if (Objects.nonNull(chatUser) && chatUser.getRole().getRole() == RoleEnum.USER) {
+
             session.setAttribute("user", chatUser);
             dropHttpOnlyFlag(session.getId(),request,response);
-            System.out.println(chatUser.toString());
-//            System.out.println("CHATTTTT");
+            BanUserDto banUserDto = new BanUserDto();
+            banUserDto.setLogin(chatUser.getLogin());
+            if(banService.isUserBaned(banUserDto)){
+                return "redirect:/ban";
+            }
             return "redirect:/chat";
         }
         if (Objects.nonNull(chatUser) && chatUser.getRole().getRole() == RoleEnum.ADMIN) {
@@ -75,5 +84,18 @@ public class LoginController {
             }
         }
     }
+
+    @RequestMapping(value = "/ban",method = RequestMethod.GET)
+    public ModelAndView banedUser(HttpSession session){
+        ChatUser chatUser = (ChatUser) session.getAttribute("user");
+        ModelAndView modelAndView = new ModelAndView();
+        if (Objects.nonNull(chatUser) ) {
+            modelAndView.setViewName("ban");
+            return modelAndView;
+        }
+        modelAndView.setViewName("redirect:/");
+        return modelAndView;
+    }
+
 
 }

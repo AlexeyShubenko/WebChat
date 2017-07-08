@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -37,6 +38,7 @@ import java.util.*;
             "message":"Hi"}
      */
 
+@Component
 public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     ///String - login клієнта, WebSocketSession - його webSocket сесія

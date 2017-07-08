@@ -30,7 +30,6 @@ public class WebSocketConfig extends WebMvcConfigurerAdapter implements WebSocke
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
-        System.out.println("IN registerWebSocketHandlers!!!");
         webSocketHandlerRegistry.addHandler(getChatWebSocketHandler(),
                 env.getProperty("socket.url")).withSockJS();
     }
