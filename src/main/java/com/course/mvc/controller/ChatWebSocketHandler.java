@@ -93,7 +93,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
                     ///формируем json ответа
                     JsonObject broadcastJson = new JsonObject();
                     broadcastJson.addProperty("auth","yes");
-                    broadcastJson.addProperty("name", senderLogin);
+                    broadcastJson.addProperty("login", senderLogin);
                     broadcastJson.addProperty("message",broadcastMessage);
                     ///отсилает сообщ. всем активним пользователям
                     sendAllActiveUsers(broadcastJson);

@@ -32,5 +32,7 @@ public class WebSocketConfig extends WebMvcConfigurerAdapter implements WebSocke
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
         webSocketHandlerRegistry.addHandler(getChatWebSocketHandler(),
                 env.getProperty("socket.url")).withSockJS();
+//        webSocketHandlerRegistry.addHandler(getChatWebSocketHandler(),
+//                env.getProperty("socket.url"));
     }
 }
