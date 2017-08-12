@@ -12,6 +12,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -39,6 +40,7 @@ public class AdminController {
         this.banService = banService;
     }
 
+    @PreAuthorize("myAuth('ADMIN')")
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public ModelAndView getAdminPage(HttpSession session) {
         ChatUser chatUser = (ChatUser) session.getAttribute("user");
@@ -51,6 +53,7 @@ public class AdminController {
         return new ModelAndView("redirect:/");
     }
 
+    @PreAuthorize("myAuth('ADMIN')")
     @RequestMapping(value = "/admin/add", method = RequestMethod.POST)
     public ResponseEntity<BanDto> addUserToBan(@RequestBody ChatUserDto chatUserDto, HttpSession session) {
         ChatUser chatUser = (ChatUser) session.getAttribute("user");
@@ -67,6 +70,7 @@ public class AdminController {
         return new ResponseEntity<BanDto>(banDto, HttpStatus.UNAUTHORIZED);
     }
 
+    @PreAuthorize("myAuth('ADMIN')")
     @RequestMapping(value = "/admin/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<BanDto> deleteUserFromBanList(@PathVariable("id") Long id,
                                                         HttpSession session) {
@@ -84,6 +88,7 @@ public class AdminController {
         return new ResponseEntity<BanDto>(banDto, HttpStatus.UNAUTHORIZED);
     }
 
+    @PreAuthorize("myAuth('ADMIN')")
     @RequestMapping(value = "/admin/getUsers", method = RequestMethod.GET)
     public ResponseEntity<ResponseDto> getAllUsersExceptAdmin(HttpSession session) {
         ChatUser chatUser = (ChatUser) session.getAttribute("user");

@@ -7,6 +7,7 @@ import com.course.mvc.dto.ChatUserDto;
 import com.course.mvc.service.BanService;
 import com.course.mvc.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -85,6 +86,7 @@ public class LoginController {
         }
     }
 
+    @PreAuthorize("myAuth('ADMIN') or myAuth('USER')")
     @RequestMapping(value = "/ban",method = RequestMethod.GET)
     public ModelAndView banedUser(HttpSession session){
         ChatUser chatUser = (ChatUser) session.getAttribute("user");

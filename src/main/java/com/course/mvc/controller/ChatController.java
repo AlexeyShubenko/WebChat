@@ -2,6 +2,7 @@ package com.course.mvc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +20,7 @@ public class ChatController {
     @Autowired
     Environment environment;
 
+    @PreAuthorize("myAuth('ADMIN') or myAuth('USER')")
     @RequestMapping(value = "/chat",method = RequestMethod.GET)
     public ModelAndView getChatPage(HttpSession session){
 

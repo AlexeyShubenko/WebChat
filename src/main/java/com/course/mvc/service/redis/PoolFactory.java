@@ -25,7 +25,6 @@ public class PoolFactory {
     @Autowired
     public PoolFactory(JedisPool jedisPool){
        this.jedisPool = jedisPool;
-        System.out.println("POOL FACTORY!");
     }
 
     public Jedis getJedis(){
