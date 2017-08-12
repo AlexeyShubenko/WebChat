@@ -23,15 +23,12 @@ public class ChatController {
     @PreAuthorize("myAuth('ADMIN') or myAuth('USER')")
     @RequestMapping(value = "/chat",method = RequestMethod.GET)
     public ModelAndView getChatPage(HttpSession session){
-
         ModelAndView modelAndView = new ModelAndView();
 
         if(Objects.nonNull(session.getAttribute("user"))){
-            System.out.println("IN CHAT USER CONTROLLER!! " +session.getAttribute("user") );
             modelAndView.addObject("sockUrl",environment.getProperty("socket.url"));
             modelAndView.setViewName("chat");
         }else {
-            System.out.println("ELSE!! " + session.getAttribute("user"));
             modelAndView.setViewName("index");
         }
         return modelAndView;

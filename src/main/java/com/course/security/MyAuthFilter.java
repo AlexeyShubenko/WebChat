@@ -12,21 +12,22 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-public class MyAuthFilter extends AbstractAuthenticationProcessingFilter{
+public class MyAuthFilter /*extends AbstractAuthenticationProcessingFilter*/{
 
 
-    public MyAuthFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
-        super(requiresAuthenticationRequestMatcher);
-    }
+//    public MyAuthFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
+//        super(requiresAuthenticationRequestMatcher);
+//    }
+//
+//    @Override
+//    public Authentication attemptAuthentication(HttpServletRequest request
+//                                                , HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+//        String userLogin = request.getParameter("login").trim();
+//        String userPassword = request.getParameter("password").trim();
+//
+//        Authentication authentication = new UsernamePasswordAuthenticationToken(userLogin,userPassword);
+//
+//        return authentication;
+//    }
 
-    @Override
-    public Authentication attemptAuthentication(HttpServletRequest request
-                                                , HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        String userLogin = request.getParameter("login").trim();
-        String userPassword = request.getParameter("password").trim();
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userLogin,userPassword);
-
-        return authentication;
-    }
 }

@@ -40,6 +40,4 @@ public class CustomPermissionEvaluator implements PermissionEvaluator{
         return false;
     }
 
-//    @Override
-//    public boolean hasAuthority
 }

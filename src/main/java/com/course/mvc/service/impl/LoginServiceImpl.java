@@ -9,7 +9,12 @@ import com.course.mvc.exceptions.UserSaveException;
 import com.course.mvc.repository.ChatUserRepository;
 import com.course.mvc.repository.RoleRepository;
 import com.course.mvc.service.LoginService;
+import com.course.security.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -22,11 +27,15 @@ public class LoginServiceImpl implements LoginService {
 
     private ChatUserRepository chatUserRepository;
     private RoleRepository roleRepository;
+    private UserDetailsService userDetailsService;
+    private AuthenticationManager authenticateManager;
 
     @Autowired
-    public LoginServiceImpl(ChatUserRepository chatUserRepository, RoleRepository roleRepository) {
+    public LoginServiceImpl(ChatUserRepository chatUserRepository, RoleRepository roleRepository,UserDetailsService userDetailsService,AuthenticationManager authenticateManager) {
         this.chatUserRepository = chatUserRepository;
         this.roleRepository = roleRepository;
+        this.userDetailsService = userDetailsService;
+        this.authenticateManager = authenticateManager;
     }
 
     @Override
@@ -46,12 +55,20 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-//    @Transactional
     public ChatUser verifyLogin(String login, String password) {
-        ChatUser chatUser = chatUserRepository.findChatUserByLogin(login);
-        if (Objects.nonNull(chatUser) && chatUser.getPassword().equals(password)) {
-            return chatUser;
+//        ChatUser chatUser = chatUserRepository.findChatUserByLogin(login);
+//        if (Objects.nonNull(chatUser) && chatUser.getPassword().equals(password)) {
+//            return chatUser;
+//        }
+//        return null;
+        MyUserDetails userDetails = (MyUserDetails) userDetailsService.loadUserByUsername(login);
+
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
+                = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
+        authenticateManager.authenticate(usernamePasswordAuthenticationToken);
+        if(usernamePasswordAuthenticationToken.isAuthenticated()){
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         }
-        return null;
+        return userDetails.getChatUser();
     }
 }

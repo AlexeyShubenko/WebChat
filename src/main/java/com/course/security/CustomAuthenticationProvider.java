@@ -49,6 +49,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             GrantedAuthority grantedAuthorities = new SimpleGrantedAuthority(role);
             authorities.add(grantedAuthorities);
             Authentication auth = new UsernamePasswordAuthenticationToken(user, password, authorities);
+
             return auth;
         }
 

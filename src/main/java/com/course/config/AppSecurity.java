@@ -1,18 +1,22 @@
 package com.course.config;
 
+
+import com.course.mvc.service.impl.MyUserDetailService;
 import com.course.security.CustomAuthenticationProvider;
-import com.course.security.CustomMethodSecurityExpressionHandler;
-import com.course.security.MyAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.util.matcher.RegexRequestMatcher;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+import javax.sql.DataSource;
+
 
 /**
  * Created by Владимир on 29.07.2017.
@@ -21,50 +25,22 @@ import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 @Configuration
 @EnableWebSecurity
 @ComponentScan("com.course.security")
+@Import(MyUserDetailService.class)
 public class AppSecurity extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private CustomAuthenticationProvider customAuthenticationProvider;
-
-//    public AppSecurity(CustomAuthenticationProvider customAuthenticationProvider){
-//        this.customAuthenticationProvider = customAuthenticationProvider;
-//    }
-
-//    public CustomAuthenticationProvider getAuthProvider(){
-//
-//        return new CustomAuthenticationProvider();
-//    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().anyRequest().authenticated()
-                .and().addFilter(new MyAuthFilter( new RegexRequestMatcher("/", null)))
-                .httpBasic();
-    }
-
-
-
-    @Bean
-    public CustomMethodSecurityExpressionHandler getCustomHandler() {
-
-        return new CustomMethodSecurityExpressionHandler();
-    }
-
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.authenticationProvider(customAuthenticationProvider);
-//    }
-
-
+    private UserDetailsService userDetailsService;
 
     @Autowired
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(customAuthenticationProvider);
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService);
     }
 
     @Bean
     @Override
-    public AuthenticationManager authenticationManager() throws Exception {
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_GLOBAL);
         return super.authenticationManagerBean();
     }
+
 }
