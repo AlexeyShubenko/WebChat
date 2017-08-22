@@ -7,9 +7,6 @@ import org.springframework.security.access.expression.method.MethodSecurityExpre
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 
-/**
- * Created by Владимир on 29.07.2017.
- */
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true,securedEnabled = true)
 public class CustomPermissionConfig extends GlobalMethodSecurityConfiguration  {
